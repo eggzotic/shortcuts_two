@@ -1,5 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:shortcuts_two/widgets/tile3_content.dart';
 import '../model/section.dart';
 
 class AppState with ChangeNotifier {
@@ -9,6 +10,12 @@ class AppState with ChangeNotifier {
     _sectionNumber = section;
     notifyListeners();
   }
+
+  bool get isMobile => [
+    TargetPlatform.android,
+    TargetPlatform.fuchsia,
+    TargetPlatform.iOS,
+  ].contains(defaultTargetPlatform);
 
   late final sections = [
     Section(),
@@ -49,22 +56,11 @@ class AppState with ChangeNotifier {
     _sliderValue = value;
     notifyListeners();
   }
-}
 
-class Tile3Content extends StatelessWidget {
-  const Tile3Content({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final appState = context.watch<AppState>();
-    return ListTile(
-      leading: Text(appState.sliderValue.toStringAsFixed(0)),
-      title: Slider.adaptive(
-        value: appState.sliderValue,
-        onChanged: appState.setSlider,
-        min: 0,
-        max: 100,
-      ),
-    );
+  Widget? _indicator;
+  Widget? get indicator => _indicator;
+  void setIndicator(Widget? indicator) {
+    _indicator = indicator;
+    notifyListeners();
   }
 }
